@@ -29,10 +29,8 @@
   <div class="centered-card card">
     <div class="card-body">
       <h3 class="mb-3">¡Cuenta confirmada!</h3>
-      <p class="text-muted">
-        El correo <strong>csctomasgonzalez@gmail.com</strong><br>
-        ha sido verificado exitosamente
-      </p>
+        <p class="login-box-msg">El correo {{$correo}}<br>Ha sido confirmado</p>
+
       <a href="{{route('login')}}" class="btn btn-primary mt-3">
         <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
       </a>

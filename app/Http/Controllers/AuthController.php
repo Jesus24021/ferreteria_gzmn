@@ -21,16 +21,15 @@ class AuthController extends Controller
         try {
             $reUsuario = DB::connection('mysql')
                 ->table('usuarios')
-                ->select('id', 'nombre_completo', 'contrasennia', 'activo') // Asegúrate que el nombre de la columna coincida
+                ->select('id', 'nombre_completo', 'contrasennia', 'activo')
                 ->where('correo_electronico', '=', $correo_electronico)
                 ->where('activo', '=', 1)
                 ->first();
 
-
             Usuario::first();
 
             if ($reUsuario) {
-                // Corrige la variable de contraseña (debe coincidir con el nombre de la columna)
+
                 if (Hash::check($contrasennia, $reUsuario->contrasennia)) {
                     session()->put('id', $reUsuario->id);
                     session()->put('nombreCompleto', $reUsuario->nombre_completo);

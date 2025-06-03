@@ -134,53 +134,54 @@ class ApiUsuariosController extends Controller
     }
 
     public function partialUpdate(Request $request, $id)
-    {
-        $validarDatos = Validator::make($request->all(), [
-            'nombre_usuario' => 'required',
-            'contrasennia' => 'required',
-        ]);
 
-        $data = $request->json()->all();
+        {
+            $validarDatos = Validator::make($request->all(), [
+                'nombre_usuario' => 'required',
+                'contrasennia' => 'required',
+            ]);
 
-        if ($validarDatos->fails()) {
-            return response()->json([
-                'message' => 'Error en la validación de datos',
-                'error' => $validarDatos->errors(),
-                'status' => 400
-            ], 400);
-        } else {
-            try {
-                $usuario = Usuario::find($id);
-                if ($usuario) {
-                    $usuario->contrasennia = $data['contrasennia'];
-                    $usuario->nombre_usuario = $data['nombre_usuario'];
-                    $usuario->save();
+            $data = $request->json()->all();
 
-                    return response()->json(['message' => 'Usuario actualizado correctamente'], 200);
-                } else {
-                    Log::warning('Usuario no existente con ID: ' . $id);
+            if ($validarDatos->fails()) {
+                return response()->json([
+                    'message' => 'Error en la validación de datos',
+                    'error' => $validarDatos->errors(),
+                    'status' => 400
+                ], 400);
+            } else {
+                try {
+                    $usuario = Usuario::find($id);
+                    if ($usuario) {
+                        $usuario->nombre_usuario = $data['nombre_usuario'];
+                        $usuario->contrasennia = Hash::make($data['contrasennia']);
+                        $usuario->save();
+
+                        return response()->json(['message' => 'Usuario actualizado correctamente'], 200);
+                    } else {
+                        Log::warning('Usuario no existente con ID: ' . $id);
+                        return response()->json([
+                            'message' => 'Usuario no existente',
+                            'status' => 404
+                        ], 404);
+                    }
+                } catch (QueryException $e) {
+                    Log::error('Error de base de datos al actualizar usuario:', ['error' => $e->getMessage()]);
                     return response()->json([
-                        'message' => 'Usuario no existente',
-                        'status' => 404
-                    ], 404);
+                        'message' => 'Error de base de datos al actualizar el usuario',
+                        'error' => $e->getMessage(),
+                        'status' => 500
+                    ], 500);
+                } catch (\Exception $e) {
+                    Log::error('Error inesperado al actualizar usuario:', ['error' => $e->getMessage()]);
+                    return response()->json([
+                        'message' => 'Error inesperado al actualizar el usuario',
+                        'error' => $e->getMessage(),
+                        'status' => 500
+                    ], 500);
                 }
-            } catch (QueryException $e) {
-                Log::error('Error de base de datos al actualizar usuario:', ['error' => $e->getMessage()]);
-                return response()->json([
-                    'message' => 'Error de base de datos al actualizar el usuario',
-                    'error' => $e->getMessage(),
-                    'status' => 500
-                ], 500);
-            } catch (\Exception $e) {
-                Log::error('Error inesperado al actualizar usuario:', ['error' => $e->getMessage()]);
-                return response()->json([
-                    'message' => 'Error inesperado al actualizar el usuario',
-                    'error' => $e->getMessage(),
-                    'status' => 500
-                ], 500);
             }
         }
-    }
     public function destroy($id){
         try {
             $usuario = Usuario::find($id);

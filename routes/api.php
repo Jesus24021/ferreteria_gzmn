@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\ApiProductosController;
+use App\Http\Controllers\Api\ApiCategoriaController;
 use Illuminate\Http\Request;
+use App\Models\ferreteria\Categoria;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ApiUsuariosController;
@@ -26,6 +28,16 @@ Route::prefix('/producto')->group(function () {
 });
 
 
+
+
+
+Route::prefix('/categorias')->group(function () {
+    Route::get('/', [ApiCategoriaController::class, 'index']);
+    Route::post('/', [ApiCategoriaController::class, 'store']);
+    Route::get('/show', [ApiCategoriaController::class, 'show']);
+    Route::patch('/{id}', [ApiCategoriaController::class, 'partialUpdate']);
+    Route::delete('/{id}', [ApiCategoriaController::class, 'destroy']);
+});
 
 
 ////Route::prefix('/usuario')->middleware('auth:sanctum')->group(function () {

@@ -22,6 +22,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::prefix('/login')->group(function () {
    Route::get('/', [AuthController::class, 'showloginForm'])->name('login');
    Route::post('/post', [AuthController::class, 'login'])->name('login.post');

@@ -45,7 +45,7 @@ class RegistrarUserController extends Controller
             ->where('correo_electronico','=', $correo)
             ->update(['activo' => 1]);
 
-        return redirect('MensajeCorreoConfirmado',['correo' => $correo]);
+        return redirect('mensajecorreoconfirmado',['correo' => $correo]);
     }
     public function apiShowAll (){
         $reUsuario = DB::connection('mysql')
