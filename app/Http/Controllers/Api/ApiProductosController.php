@@ -19,6 +19,10 @@ class ApiProductosController extends Controller
     {
         $DatosProducto = $this->producto->getAllProductos();
         return response()->json($DatosProducto);
+
+
+//        $productos = Producto::with('categoria')->get();
+//        return response()->json($productos);
     }
     /**
      * Store a newly created resource in storage.

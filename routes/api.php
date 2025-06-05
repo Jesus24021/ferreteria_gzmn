@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\ApiOdooController;
 use App\Http\Controllers\Api\ApiProductosController;
 use App\Http\Controllers\Api\ApiCategoriaController;
+
 use Illuminate\Http\Request;
 use App\Models\ferreteria\Categoria;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +30,7 @@ Route::prefix('/producto')->group(function () {
 });
 
 
+Route::get('/odoo/products', [ApiOdooController::class, 'getProducts']);
 
 
 
